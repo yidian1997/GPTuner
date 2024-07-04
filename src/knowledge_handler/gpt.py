@@ -6,7 +6,7 @@ from openai import AzureOpenAI
 
 
 class GPT:
-    def __init__(self, model="gpt-4"):
+    def __init__(self):
         self.model = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
         self.money = 0
         self.token = 0

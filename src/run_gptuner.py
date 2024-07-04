@@ -42,15 +42,15 @@ if __name__ == '__main__':
 
 
     # prepare tuning lake and structured knowledge
-    target_knobs_path = f"/home/knob/revision/GPTuner/knowledge_collection/{args.db}/target_knobs.txt"
+    target_knobs_path = f"~/GPTuner/knowledge_collection/{args.db}/target_knobs.txt"
     with open(target_knobs_path, 'r') as file:
         lines = file.readlines()
         target_knobs = [line.strip() for line in lines]
 
 
     # write your api_base and api_key
-    knowledge_pre = KGPre(db=args.db, api_base="your_api_base", api_key="your_api_key", model="gpt-4")
-    knowledge_trans = KGTrans(db=args.db, api_base="your_api_base", api_key="your_api_key", model="gpt-4")
+    knowledge_pre = KGPre(db=args.db)
+    knowledge_trans = KGTrans(db=args.db)
     for knob in target_knobs:
         knowledge_pre.pipeline(knob)
         knowledge_trans.pipeline(knob)

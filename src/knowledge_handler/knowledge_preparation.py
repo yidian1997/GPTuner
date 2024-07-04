@@ -6,8 +6,8 @@ import time
 from knowledge_handler.gpt import GPT
 
 class KGPre(GPT):
-    def __init__(self, api_base, api_key, db="postgres", model=GPT.__init__.__defaults__[0]):
-        super().__init__(api_base, api_key, model=model)
+    def __init__(self, db="postgres"):
+        super().__init__()
         self.db = db
         self.knob_path = f"./knowledge_collection/{self.db}"
         self.knob_num = 0
