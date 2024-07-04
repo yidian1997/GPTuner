@@ -1,25 +1,24 @@
-import openai
+import os
 import re
 import json
 import tiktoken
+from openai import AzureOpenAI
 
 class GPT:
     def __init__(self, api_base, api_key, model="gpt-4"):
-        self.api_base = api_base
-        self.api_key = api_key
         self.model = model
         self.money = 0
         self.token = 0
         self.cur_token = 0
         self.cur_money = 0
-        self.__connect()
-        
-    def __connect(self):
-        openai.api_base = self.api_base
-        openai.api_key = self.api_key
+        self.client = AzureOpenAI(
+            api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+            api_version="2024-02-01",
+            azure_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
+        )
 
     def get_answer(self, prompt):
-        response = openai.ChatCompletion.create(
+        response = self.client.chat.completions.create(
             model=self.model,
             messages = [{
             "role": "user",
@@ -27,10 +26,9 @@ class GPT:
             }],
             n=1,
             stop=None,
-            temperature=0
-        )
+            temperature=0)
         return response.choices[0].message["content"].strip()
-    
+
     def calc_token(self, in_text, out_text=""):
         enc = tiktoken.encoding_for_model(self.model)
         return len(enc.encode(out_text+in_text))
@@ -47,7 +45,7 @@ class GPT:
     def remove_html_tags(self, text):
         clean = re.compile('<.*?>')
         return re.sub(clean, '', text)
-    
+
     def extract_json_from_text(self, text):
         json_pattern = r'\{[^{}]*\}'
         match = re.search(json_pattern, text)
