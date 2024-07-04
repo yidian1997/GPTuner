@@ -4,9 +4,10 @@ import json
 import tiktoken
 from openai import AzureOpenAI
 
+
 class GPT:
-    def __init__(self, api_base, api_key, model="gpt-4"):
-        self.model = model
+    def __init__(self, model="gpt-4"):
+        self.model = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
         self.money = 0
         self.token = 0
         self.cur_token = 0
@@ -14,15 +15,15 @@ class GPT:
         self.client = AzureOpenAI(
             api_key=os.getenv("AZURE_OPENAI_API_KEY"),
             api_version="2024-02-01",
-            azure_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
+            azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT")
         )
 
     def get_answer(self, prompt):
         response = self.client.chat.completions.create(
             model=self.model,
-            messages = [{
-            "role": "user",
-            "content": prompt
+            messages=[{
+                "role": "user",
+                "content": prompt
             }],
             n=1,
             stop=None,
@@ -31,7 +32,7 @@ class GPT:
 
     def calc_token(self, in_text, out_text=""):
         enc = tiktoken.encoding_for_model(self.model)
-        return len(enc.encode(out_text+in_text))
+        return len(enc.encode(out_text + in_text))
 
     def calc_money(self, in_text, out_text):
         """money for gpt4"""
@@ -57,4 +58,3 @@ class GPT:
                 return None
         else:
             return None
-

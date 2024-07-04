@@ -37,7 +37,7 @@ if __name__ == '__main__':
 
     # Select target knobs, write your api_base and api_key
     dbms._connect("benchbase")
-    knob_selection = KnobSelection(db=args.db, dbms=dbms, benchmark=args.test, api_base="your_api_base", api_key="your_api_key", model="gpt-4")
+    knob_selection = KnobSelection(db=args.db, dbms=dbms, benchmark=args.test)
     knob_selection.select_interdependent_all_knobs()
 
 

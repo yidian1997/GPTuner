@@ -8,8 +8,8 @@ from knowledge_handler.gpt import GPT
 from config_recommender.workload_runner import BenchbaseRunner
 
 class KnobSelection(GPT):
-    def __init__(self, api_base, api_key, db, dbms, benchmark, model=GPT.__init__.__defaults__[0]):
-        super().__init__(api_base, api_key, model=model)
+    def __init__(self, db, dbms, benchmark):
+        super().__init__()
         self.db = db
         self.dbms = dbms
         self.benchmark = benchmark
